@@ -1,0 +1,10 @@
+.usersb {
+    width: 22%;
+    height: 89%;
+    background: rgba(20, 90, 140, 0.75);
+    border: 2px solid    rgba(20, 90, 140, 0.75); ;
+    position: absolute;
+    right: 60.9%;
+    bottom: 0;
+  }
+  

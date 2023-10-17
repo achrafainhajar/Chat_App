@@ -1,0 +1,9 @@
+.list
+{
+    overflow-y:scroll;
+    height: 84%;
+    position: absolute;
+    left: 9%;
+    top: 6%;
+    width: 91.3%;
+}

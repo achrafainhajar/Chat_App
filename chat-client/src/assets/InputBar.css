@@ -1,0 +1,11 @@
+.input-bar
+{
+    width: 88%;
+    height: 7%;
+    position: absolute;
+    border-radius: 30px;
+    padding: 2%;
+    padding-right: 9.5%;
+    bottom: 2%;
+    right: 20px;
+}
