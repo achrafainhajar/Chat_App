@@ -10,7 +10,7 @@ const MessageList = ({ messages }: Props) => {
       <div className='list'>
         <ul>
 
-          {messages.map((item, index) => <li key={index} >{item.text}</li>)}
+          {messages.map((item, index) => <li key={index} >{item.name}  ::  {item.text}</li>)}
 
         </ul>
       </div>

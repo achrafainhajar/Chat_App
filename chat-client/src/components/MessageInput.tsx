@@ -3,9 +3,11 @@ import "../assets/InputBar.css"
 import "../assets/ImageBackground.css"
 import { useRef } from "react";
 
-interface Props {
+interface Props
+{
     onSend: (msg: string) => (void);
 }
+
 const MessageList = ({ onSend }: Props) => {
 
     const msg = useRef(null);

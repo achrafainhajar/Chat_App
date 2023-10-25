@@ -10,22 +10,26 @@ export class MessagesGateway {
   @SubscribeMessage('message')
   async create(@MessageBody() createMessageDto: CreateMessageDto) {
     const message =  await this.messagesService.create(createMessageDto);
-    this.findAll();
+    this.findAll(createMessageDto.roomname);
     return message;
   }
-
+  @SubscribeMessage('createRoom')
+  createRoom(@ConnectedSocket() socket: Socket, @MessageBody() data: { roomname: string }) {
+    socket.join(data.roomname);
+    socket.to(data.roomname).emit('roomCreated', { room: data.roomname });
+    this.messagesService.createRoom(data.roomname);
+    return { room: data.roomname};
+  }
   @SubscribeMessage('findAllMessages')
-  findAll() {
-    this.server.emit('find',this.messagesService.findAll())
+  findAllMessagesByRoom(@MessageBody() createMessageDto:CreateMessageDto)
+  {
+    this.findAll(createMessageDto.roomname);
+  }
+  findAll(room_name:string) {
+    this.server.to(room_name).emit('find',this.messagesService.findAll(room_name))
   }
   @SubscribeMessage('join')
   joinRoom(@MessageBody('name') name:string,@ConnectedSocket() client : Socket) {
       return this.messagesService.identify(name,client.id);
-  }
-  @SubscribeMessage('typing')
-  async typing(@MessageBody() typing:boolean,@ConnectedSocket() client : Socket)
-  {
-    const name = await this.messagesService.getClientName(client.id);
-    client.broadcast.emit('typing', {name,typing});
   }
 }
