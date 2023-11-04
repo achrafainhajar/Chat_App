@@ -1,47 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
-import { Message, Rooms } from './entities/message.entity';
+import { Member, MemberStatus, Message, Rooms } from './entities/message.entity';
+import { CreateChannelDto } from './dto/channel-type.dto';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class MessagesService {
-  // database
-  room: Rooms[] = [];
-  client_To_user = {};
-  create(createMessageDto: CreateMessageDto) {
-    try
-    {
-      return this.room.find(room => room.room_name === createMessageDto.roomname).message.push(createMessageDto);
+  
+  private rooms: Rooms[] = [];
+  private clientToUserMap: { [clientId: string]: string } = {};
+
+  addMessage(createMessageDto: CreateMessageDto): Message[] | null {
+    const targetRoom = this.rooms.find(room => room.room_name === createMessageDto.roomname);
+    if (!targetRoom) {
+      console.error('Room not found!');
+      return null;
     }
-    catch
-    {
-        return []
+    targetRoom.message.push(createMessageDto);
+    return targetRoom.message;
+  }
+
+  getClientName(clientId: string): string | undefined {
+    return this.clientToUserMap[clientId];
+  }
+
+  addRoom(channel: CreateChannelDto,socket:Socket,name:string): void {
+    const existingRoom = this.rooms.find(room => room.room_name === channel.name);
+    if (existingRoom) {
+      console.error('Room already exists!');
+      return;
     }
+    const newRoom = new Rooms(channel.name, channel.type, channel.password);
+    const member = new Member(socket.id,name,MemberStatus.OWNER,new Date());
+    newRoom.addMember(member);
+    this.rooms.push(newRoom);
   }
-  getClientName(client_Id: string) {
-    return this.client_To_user[client_Id];
+
+  getAllRooms(): Rooms[] | null {
+    return this.rooms.length ? this.rooms : null;
   }
-  createRoom(room_name: string) {
-    const tmp_room = new Rooms(room_name);
-    console.log(tmp_room)
-    this.room.push(tmp_room);
-  }
-  findAll(roomname: string) {
-    let messages;
-    try {
-      messages = this.room.find(room => 
-      room.room_name === roomname);
-      console.log(messages.message);
-      return(messages.message);
+
+  getMessagesByRoomName(roomname: string): Message[] {
+    const targetRoom = this.rooms.find(room => room.room_name === roomname);
+    if (!targetRoom) {
+      console.error('Room not found!');
+      return [];
     }
-    catch
-    {
-      console.log("khsr");
-      return ([]);
-    }
+    return targetRoom.message;
   }
-  identify(name: string, client_Id: string) {
-    this.client_To_user[client_Id] = name;
-    return (Object.values(this.client_To_user));
+  findRoomByName(name: string): Rooms | null {
+    return this.rooms.find(room => room.room_name === name) || null;
+  }
+  identifyClient(name: string, clientId: string): string[] {
+    this.clientToUserMap[clientId] = name;
+    return Object.values(this.clientToUserMap);
   }
 }

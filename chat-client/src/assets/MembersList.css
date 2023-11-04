@@ -1,0 +1,36 @@
+.member {
+    width: 100%;
+}
+
+.member ul, 
+.member li, 
+.member div{
+    width: 100%; /* Ensure they take up the full width of their parent */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    position: relative;
+    background: rgb(159, 162, 162);
+}
+
+.memberx {
+    width: 10%;
+    color: red;
+}
+.memberxd {
+    width: 20%;
+    color: rgb(23, 160, 23);
+}
+.buttons-container
+{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.highlighted
+{
+    /* or any color you prefer */
+          /* ensure it's higher than any other z-index in the MessageList component */
+    position: absolute; /* or fixed, depending on your requirements */
+    width: 50%;
+}

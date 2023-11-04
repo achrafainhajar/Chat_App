@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import  { useRef } from 'react';
 
 interface Props {
-    setname: (name: string) => void; // It should be 'void' not '(void)'
+    setname: (name: string) => void; 
 }
 
 const JoinRoom = ({ setname }: Props) => {
-    const uname = useRef<HTMLInputElement | null>(null); // Specify the element type for useRef
+    const uname = useRef<HTMLInputElement | null>(null);
 
     return (
         <div>

@@ -1,0 +1,20 @@
+.square {
+    width: 90%;         /* Width of the square */
+    height:40px;        /* Height of the square */
+    background-color: #b0b0b0; /* Background color of the square */
+    display: flex;        /* Using Flexbox to center the text */
+    justify-content: center;  /* Center the text horizontally */
+    align-items: center;      /* Center the text vertically */
+    border: 2px solid #fa0000;   /* Border for the square */
+}
+.room
+{
+    margin: 0;
+    text-align: center;
+}
+.listing
+{
+    display: flex;
+    width: 100%;
+    height: 100%;
+}

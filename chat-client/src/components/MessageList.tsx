@@ -1,4 +1,3 @@
-import React from 'react'
 import { Message } from '../App';
 import "../assets/MessageList.css"
 interface Props {
